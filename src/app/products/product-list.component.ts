@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IProduct } from './products';
 
 @Component({
@@ -6,11 +6,22 @@ import { IProduct } from './products';
     templateUrl: './product-list.component.html'
 })
 
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
     // tslint:disable-next-line:no-inferrable-types
     pagetitle: string = 'Product Listing';
     showImage = false;
-    searchFilter = 'cart';
+
+    _searchFilter: string;
+    get searchFilter(): string {
+      return this._searchFilter;
+    }
+
+    set searchFilter(value: string) {
+      this._searchFilter = value;
+      this.filteredProducts = this.searchFilter ? this.performSearch(this.searchFilter) : this.products;
+    }
+
+    filteredProducts: IProduct[];
     products: IProduct[] = [
       {
         'productId': 1,
@@ -64,7 +75,22 @@ export class ProductListComponent {
       }
     ];
 
+    constructor() {
+      this.filteredProducts = this.products;
+      this.searchFilter = '';
+    }
+
     toggleImage (): void {
       this.showImage = !this.showImage;
+    }
+
+    ngOnInit (): void {
+      console.log('init');
+    }
+
+    performSearch(searchBy: string): IProduct[] {
+      searchBy = searchBy.toLocaleLowerCase();
+      return this.products.filter((product: IProduct) =>
+        product.productName.toLocaleLowerCase().indexOf(searchBy) !== -1);
     }
 }

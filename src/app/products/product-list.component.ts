@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IProduct } from './products';
+import { ProductService } from '../services/product.service';
 
 @Component({
     selector: 'pm-products',
@@ -76,9 +77,7 @@ export class ProductListComponent implements OnInit {
       }
     ];
 
-    constructor() {
-      this.filteredProducts = this.products;
-      this.searchFilter = '';
+    constructor(private productService: ProductService) {
     }
 
     toggleImage (): void {
@@ -86,7 +85,8 @@ export class ProductListComponent implements OnInit {
     }
 
     ngOnInit (): void {
-      console.log('init');
+      this.products = this.productService.getProducts();
+      this.filteredProducts = this.products;
     }
 
     performSearch(searchBy: string): IProduct[] {

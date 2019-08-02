@@ -10,6 +10,7 @@ export class ProductListComponent implements OnInit {
     // tslint:disable-next-line:no-inferrable-types
     pagetitle: string = 'Product Listing';
     showImage = false;
+    productMessage: string;
 
     _searchFilter: string;
     get searchFilter(): string {
@@ -92,5 +93,9 @@ export class ProductListComponent implements OnInit {
       searchBy = searchBy.toLocaleLowerCase();
       return this.products.filter((product: IProduct) =>
         product.productName.toLocaleLowerCase().indexOf(searchBy) !== -1);
+    }
+
+    starClicked(message): void {
+      this.productMessage = message;
     }
 }
